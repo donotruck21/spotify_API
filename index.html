@@ -20,6 +20,9 @@
                 height: 50px;
                 margin-left: 15px;
             }
+            #artistLink{
+                margin-left: 15px;
+            }
         </style>
 
         <script>
@@ -53,7 +56,31 @@
 
                         if(type == "artist"){
                             console.log("inputted an artist")
-                            console.log(res)
+                            console.log(res.artists.items)
+                            for(var i = 0; i < res.artists.items.length; i++){
+                                console.log("name:", res.artists.items[i].name)
+                                if(res.artists.items[i].images.length > 0){
+                                    console.log("photo:", res.artists.items[i].images[0].url)
+                                } else {
+                                    console.log("no photo available")
+                                }
+                                console.log("listen:", res.artists.items[i].external_urls.spotify)
+                                console.log("followers:", res.artists.items[i].followers.total)
+
+                                html_string += "<h4>#" + (i+1) + ".</h4>" +
+                                            "<h4>Artist Name: " + res.artists.items[i].name +
+                                            "</h4><h5>Followers: " +
+                                            res.artists.items[i].followers.total + "</h5>"
+
+
+                                if(res.artists.items[i].images.length > 0){
+                                    html_string += "<img height='75' src='" + res.artists.items[i].images[0].url + "'></h4>"
+                                } else {
+                                    html_string += "<img height='75' src='no_image.jpeg'></h4>"
+                                }
+                                html_string += "<a id='artistLink' href='" + res.artists.items[i].external_urls.spotify +
+                                            "'>View Profile</a><hr>"
+                            }
                         }
 
                         if(type == "album"){
