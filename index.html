@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Spotify Assignment</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <!-- BOOTSTRAP CDNs -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+        <style type="text/css">
+            *{
+                margin: 0 auto;
+            }
+            #container{
+                width: 960px;
+            }
+            #playbtn{
+                height: 50px;
+                margin-left: 15px;
+            }
+        </style>
+
+        <script>
+            $(document).ready(function(){
+                $("form").submit(function(){
+                    var text = $("#text").val()
+                    var type = $("#type").val()
+                    console.log(text, type)
+                    $.get("https://api.spotify.com/v1/search?query=" + text + "&offset=0&limit=20&type=" + type, function(res) {
+
+                        var html_string = "<h1>Results:</h1><br>";
+
+                        if(type == "track"){
+                            console.log("inputted an track")
+                            console.log(res.tracks.items)
+                            for(var i = 0; i < res.tracks.items.length; i++){
+                                console.log("name:", res.tracks.items[i].name)
+                                console.log("artist:", res.tracks.items[i].artists[0].name)
+                                console.log("albumURL:", res.tracks.items[i].album.images[0].url)
+                                console.log("listen:", res.tracks.items[i].external_urls.spotify)
+
+                                html_string += "<h4>#" + (i+1) + ".</h4>" +
+                                            "<h4>Track Name: " + res.tracks.items[i].name +
+                                            "</h4>" +
+                                            "<h4>Artist Name: " + res.tracks.items[i].artists[0].name +
+                                            "</h4>" +
+                                            "<img height='75' src='" + res.tracks.items[i].album.images[0].url + "'></h4><a href='" + res.tracks.items[i].external_urls.spotify +
+                                            "'><img id ='playbtn' src='playbtn.jpeg' alt='playbtn'></a><hr>"
+                            }
+                        }
+
+                        if(type == "artist"){
+                            console.log("inputted an artist")
+                            console.log(res)
+                        }
+
+                        if(type == "album"){
+                            console.log("inputted an album")
+                            console.log(res)
+                        }
+
+                        $("#results").html(html_string)
+                    })
+
+                    return false;
+                })
+            })
+        </script>
+    </head>
+    <body>
+        <div id="container">
+            <h1>Search music using the Spotify API!</h1><br>
+            <form action="">
+                <input id="text" type="text" name="text" placeholder="Search...">
+                <select name="type" id="type">
+                    <option value="track">Track</option>
+                    <option value="artist">Artist</option>
+                    <option value="album">Album</option>
+                </select>
+                <input class="btn btn-info" type="submit" value="Search!">
+            </form>
+            <!-- <a href=''><img id ='playbtn' src='playbtn.jpeg' alt='playbtn'></a> -->
+            <div id="results"></div>
+        </div>
+    </body>
+</html>
