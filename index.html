@@ -22,13 +22,18 @@
                 vertical-align: top;
                 width: 600px;
             }
+            #musicList{
+                display: inline-block;
+                vertical-align: top;
+            }
             #myMusic{
                 border: 4px solid black;
                 display: inline-block;
                 vertical-align: top;
                 width: 325px;
-                height: 300px;
+                height: 400px;
                 padding: 15px;
+                overflow: scroll;
             }
             #playbtn{
                 height: 50px;
@@ -46,12 +51,7 @@
                     var type = $("#type").val()
                     console.log(text, type)
                     $.get("https://api.spotify.com/v1/search?query=" + text + "&offset=0&limit=20&type=" + type, function(res) {
-                        console.log(res)
-                        // if(!res.tracks.items.length){
-                        //     var html_string = "<h1>No Results Found</h1><br>";
-                        // } else {
-                        //     var html_string = "<h1>Results:</h1><br>";
-                        // }
+                        // console.log(res)
 
                         if(type == "track"){
                             console.log("inputted an track")
@@ -69,12 +69,12 @@
                                 console.log("listen:", res.tracks.items[i].external_urls.spotify)
 
                                 html_string += "<h4>#" + (i+1) + ".</h4>" +
-                                            "<h4>Track Name: " + res.tracks.items[i].name +
+                                            "<div id='divId" + (i+1) + "'><h4>Track Name: " + res.tracks.items[i].name +
                                             "</h4>" +
                                             "<h4>Artist Name: " + res.tracks.items[i].artists[0].name +
                                             "</h4>" +
                                             "<img height='75' src='" + res.tracks.items[i].album.images[0].url + "'></h4><a href='" + res.tracks.items[i].external_urls.spotify +
-                                            "'><img id ='playbtn' src='playbtn.jpeg' alt='playbtn'></a><hr>"
+                                            "'><img id ='playbtn' src='playbtn.jpeg' alt='playbtn'></a></div><br><br><button class='btn btn-success btn-xs addBtn' data-btn-id='" + (i+1) + "'>Add to Favorites</button><hr>"
                             }
                         }
 
@@ -124,6 +124,14 @@
                     return false;
                 })
             })
+
+            $(document).on("click", ".addBtn", function(){
+                console.log("clicked btn!")
+                var btn_id = $(this).attr('data-btn-id')
+                music_html = document.getElementById("divId" + btn_id)
+                $("#myMusic").prepend(music_html)
+                $("#myMusic").prepend("<hr>")
+            })
         </script>
     </head>
     <body>
@@ -139,8 +147,10 @@
                 <input class="btn btn-info" type="submit" value="Search!">
             </form>
             <div id="results"></div>
-            <div id="myMusic">
+            <div id="musicList">
                 <h1><u>My Music</u></h1>
+                <div id="myMusic">
+            </div>
             </div>
         </div>
     </body>
