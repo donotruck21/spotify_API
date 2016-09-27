@@ -8,42 +8,11 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        <!-- FONT -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 
-        <style type="text/css">
-            *{
-                margin: 0 auto;
-            }
-            #container{
-                width: 960px;
-            }
-            #results{
-                /*border: 1px dotted black;*/
-                display: inline-block;
-                vertical-align: top;
-                width: 600px;
-            }
-            #musicList{
-                display: inline-block;
-                vertical-align: top;
-            }
-            #myMusic{
-                border: 4px solid black;
-                display: inline-block;
-                vertical-align: top;
-                width: 325px;
-                height: 400px;
-                padding: 15px;
-                overflow: scroll;
-            }
-            #playbtn{
-                height: 50px;
-                margin-left: 15px;
-            }
-            #artistLink{
-                margin-left: 15px;
-            }
-        </style>
-
+        <link rel="stylesheet" href="style.css">
+        
         <script>
             $(document).ready(function(){
                 $("form").submit(function(){
@@ -74,7 +43,7 @@
                                             "<h4>Artist Name: " + res.tracks.items[i].artists[0].name +
                                             "</h4>" +
                                             "<img height='75' src='" + res.tracks.items[i].album.images[0].url + "'></h4><a href='" + res.tracks.items[i].external_urls.spotify +
-                                            "'><img id ='playbtn' src='playbtn.jpeg' alt='playbtn'></a></div><br><br><button class='btn btn-success btn-xs addBtn' data-btn-id='" + (i+1) + "'>Add to Favorites</button><hr>"
+                                            "'><img id ='playbtn' src='images/playbtn2.png' alt='playbtn'></a></div><br><br><button class='btn btn-success btn-xs addBtn' data-btn-id='" + (i+1) + "'>Add to Favorites</button><hr>"
                             }
                         }
 
@@ -106,7 +75,7 @@
                                 if(res.artists.items[i].images.length > 0){
                                     html_string += "<img height='75' src='" + res.artists.items[i].images[0].url + "'></h4>"
                                 } else {
-                                    html_string += "<img height='75' src='no_image.jpeg'></h4>"
+                                    html_string += "<img height='75' src='images/no_image.jpeg'></h4>"
                                 }
                                 html_string += "<a id='artistLink' href='" + res.artists.items[i].external_urls.spotify +
                                             "'>View Profile</a><hr>"
@@ -119,6 +88,7 @@
                         }
 
                         $("#results").html(html_string)
+                        $("#container").css( "height", 5700 );
                     })
 
                     return false;
@@ -136,21 +106,33 @@
     </head>
     <body>
         <div id="container">
-            <h1>Search music using the Spotify API!</h1><br>
-            <form action="">
-                <input id="text" type="text" name="text" placeholder="Search...">
-                <select name="type" id="type">
-                    <option value="track">Track</option>
-                    <option value="artist">Artist</option>
-                    <option value="album">Album</option>
-                </select>
-                <input class="btn btn-info" type="submit" value="Search!">
-            </form>
-            <div id="results"></div>
-            <div id="musicList">
-                <h1><u>My Music</u></h1>
-                <div id="myMusic">
-            </div>
+            <div id="hero">
+                <div id="inner-container">
+                    <div id="header">
+                        <img id="spotify-logo" src="images/spotify_logo.png" alt="spotify_logo">
+                        <h2 id="head-text">Search your favorite tracks and artists using the Spotify API!</h2><br>
+
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <input id="text" type="text" class="form-control" placeholder="Search...">
+                            </div>
+                            <div class="form-group">
+                                <select name="type" id="type" class="form-control">
+                                    <option value="track">Track</option>
+                                    <option value="artist">Artist</option>
+                                    <!-- <option value="album">Album</option> -->
+                                </select>
+                            </div>
+                            <input class="btn search-btn" type="submit" value="Search!">
+                        </form>
+                    </div>
+
+                    <div id="results"></div>
+                    <div id="musicList">
+                        <h1><u>My Music</u></h1>
+                        <div id="myMusic"><hr></div>
+                    </div>
+                </div>
             </div>
         </div>
     </body>
